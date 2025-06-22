@@ -23,9 +23,19 @@ app.post('/api/items', (req, res) => {
 })
 
 
-app.delete('api/items/:id', (req, res) => {
+app.delete('/api/items/:id', (req, res) => {
     let { id } = req.params;
-    let itemToBeDeleted = items.find(item => item.id === id)
+    let itemToBeDeleted = items.find(item => item.id === id);
+
+    if (itemToBeDeleted) {
+        res.json({
+            message: "Item deleted",
+            items: items.filter(item => item.id !== id)
+        })
+    } else {
+        res.status(404)
+        .json({ message: `Item you are looking for doesn't exist`})
+    }
 })
 
 
