@@ -30,11 +30,31 @@ app.delete('/api/items/:id', (req, res) => {
     if (itemToBeDeleted) {
         res.json({
             message: "Item deleted",
-            items: items.filter(item => item.id !== id)
+            items: items.filter(item => item.id !== id),
         })
     } else {
         res.status(404)
         .json({ message: `Item you are looking for doesn't exist`})
+    }
+})
+
+
+app.put('/api/items/:id', (req, res) => {
+    let { id } = req.params;
+    let itemToBeUpdate = items.find(item => item.id === id);
+
+    if (itemToBeUpdate) {
+        const updatedItem = req.body;
+
+        items.forEach(item => {
+            if (item.id === req.params.id) {
+                item = updatedItem;
+                res.json({ message: `Item updated`, item})         
+            } 
+        })
+    } else {
+        res.status(404)
+        .json({ message: `Item you are looking for ${req.params.id} doesn't exist`})
     }
 })
 
